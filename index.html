@@ -645,6 +645,12 @@ footer{
 @media (max-width:600px){ .email-img{ height:13px; } }
 @media (max-width:380px){ .email-img{ height:12px; } }
 
+.meetup-note{padding:28px 0;border-bottom:1px solid var(--rule)}
+.mn-inner{display:grid;grid-template-columns:200px minmax(0,1fr) auto;gap:24px;align-items:center;border:1px solid var(--accent);padding:18px 22px;background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.mn-k{font-size:10px;letter-spacing:0.18em;color:var(--accent)}
+.mn-body{font-size:13px;line-height:1.6;text-wrap:pretty}
+.mn-links{display:flex;gap:16px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;white-space:nowrap}
+@media (max-width:900px){.mn-inner{grid-template-columns:1fr;gap:10px}.mn-links{white-space:normal}}
 </style>
 </head>
 <body data-palette="sky" data-graphics="high">
@@ -783,6 +789,18 @@ footer{
           <span class="k">Format</span>
           <span class="v">1-day</span>
         </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- MEETUP NOTICE -->
+  <section class="meetup-note">
+    <div class="wrap">
+      <div class="mn-inner">
+        <div class="mn-k">ALSO ON 26.10 · 17:00–18:30</div>
+        <div class="mn-body"><b>Global Connections: Connecting Israeli Academia with the World.</b> A meetup at Tel Aviv University, as part of the Mind-IL conferences, on building international academic collaborations with Israel. Reception with wine, cheese and networking from 17:00.</div>
+        <div class="mn-links"><a href="Scientific Program.html#global-connections">Details →</a><a href="https://globalmindil1026.forms-wizard.online/users/new" target="_blank" rel="noopener">Register →</a></div>
       </div>
     </div>
   </section>
