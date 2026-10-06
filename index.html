@@ -1,0 +1,1099 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0b1b33"/><text x="50" y="58" font-size="40" text-anchor="middle" fill="#e5c07b" font-family="Georgia,serif">φ</text></svg></template>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Physics-Israel-26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  --bg:#eaf2fc;
+  --ink:#06183a;
+  --ink-dim:#4a6a90;
+  --ink-faint:#a8bcd6;
+  --rule:#bcd0e8;
+  --accent:#1a52ff;       /* electric blue */
+  --accent-2:#ff5b3a;     /* signal orange */
+  --paper:#eaf2fc;
+  --grid:rgba(26,82,255,0.09);
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --serif: "Frank Ruhl Libre", "Frank Ruehl CLM", Georgia, serif;
+  --sans-he: "Heebo", "Helvetica Neue", Arial, sans-serif;
+}
+
+[data-palette="paper"]{
+  --bg:#f3f1ea;
+  --ink:#0d0d0a;
+  --ink-dim:#5a5a52;
+  --ink-faint:#bdbab0;
+  --rule:#c9c5b8;
+  --accent:#1a4dff;
+  --accent-2:#d63a16;
+  --paper:#f3f1ea;
+  --grid:rgba(13,13,10,0.06);
+}
+[data-palette="sky"]{
+  --bg:#eaf2fc;
+  --ink:#06183a;
+  --ink-dim:#4a6a90;
+  --ink-faint:#a8bcd6;
+  --rule:#bcd0e8;
+  --accent:#1a52ff;
+  --accent-2:#ff5b3a;
+  --paper:#eaf2fc;
+  --grid:rgba(26,82,255,0.09);
+}
+[data-palette="dark"]{
+  --bg:#0a0b0d;
+  --ink:#eaeae6;
+  --ink-dim:#9a9a93;
+  --ink-faint:#454540;
+  --rule:#26261f;
+  --accent:#d8ff3a;
+  --accent-2:#ff5b3a;
+  --paper:#0a0b0d;
+  --grid:rgba(216,255,58,0.06);
+}
+[data-palette="ink"]{
+  --bg:#0d0d0d;
+  --ink:#f5f3ec;
+  --ink-dim:#9d9a90;
+  --ink-faint:#3a3a36;
+  --rule:#262522;
+  --accent:#f5f3ec;
+  --accent-2:#ff6a3d;
+  --paper:#0d0d0d;
+  --grid:rgba(245,243,236,0.05);
+}
+[data-palette="cyan"]{
+  --bg:#06121a;
+  --ink:#e6f4f7;
+  --ink-dim:#7fa3ad;
+  --ink-faint:#2a4751;
+  --rule:#163141;
+  --accent:#5cf2ff;
+  --accent-2:#ff7ab8;
+  --paper:#06121a;
+  --grid:rgba(92,242,255,0.06);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--mono);
+  font-size:14px;
+  line-height:1.55;
+  font-weight:500;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+bodybody{ direction:ltr; }
+
+a{ color:inherit; text-decoration:none; border-bottom:1px solid var(--ink-faint); }
+a:hover{ color:var(--accent); border-bottom-color:var(--accent); }
+
+/* hairline grid background */
+.bg-grid{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 40%, transparent 95%);
+}
+[data-graphics="off"] .bg-grid{ display:none; }
+
+/* fixed chrome */
+.chrome{
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 24px;
+  font-family:var(--mono); font-size:11px; letter-spacing:0.06em;
+  color:var(--ink-dim);
+  border-bottom:1px solid var(--rule);
+  background:color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(6px);
+}
+.chrome .left, .chrome .right{ display:flex; gap:18px; align-items:center;}
+.dot{ display:inline-block; width:7px; height:7px; background:var(--accent); border-radius:50%; box-shadow:0 0 12px var(--accent); animation: pulse 1.6s infinite ease-in-out; }
+@keyframes pulse{ 0%,100%{opacity:.4} 50%{opacity:1} }
+
+.lang-toggle{
+  display:inline-flex; border:1px solid var(--rule);
+  font-family:var(--mono); font-size:11px;
+}
+.lang-toggle button{
+  background:transparent; color:var(--ink-dim);
+  border:none; padding:6px 12px;
+  font:inherit; cursor:pointer;
+  letter-spacing:0.08em;
+}
+.lang-toggle button.on{ background:var(--accent); color:var(--bg); }
+
+/* Israeli flag — faded background banner at top */
+.flag{
+  position:absolute;
+  top:48px; left:0; right:0;
+  height:360px;
+  z-index:1;
+  pointer-events:none;
+  opacity:0.10;
+  overflow:hidden;
+  display:block;
+  mask-image: linear-gradient(to bottom, #000 30%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 100%);
+}
+.flag svg{
+  width:100%; height:100%; display:block;
+}
+.flag-caption{ display:none; }
+[data-palette="dark"] .flag, [data-palette="ink"] .flag{ opacity:0.18; }
+[data-palette="cyan"] .flag{ opacity:0.14; }
+
+/* main scaffold */
+main{ position:relative; z-index:2; padding-top:48px; }
+.wrap{
+  max-width:1280px; margin:0 auto;
+  padding: 0 32px;
+}
+
+/* section header label */
+.label{
+  display:flex; align-items:baseline; gap:14px;
+  font-family:var(--mono); font-size:11px; letter-spacing:0.18em;
+  color:var(--accent); text-transform:uppercase;
+  margin-bottom:24px;
+}
+.label::before{
+  content:""; flex:0 0 32px; height:1px; background:var(--accent);
+}
+.label .num{ color:var(--ink-dim); }
+
+/* === HERO === */
+.hero{
+  position:relative;
+  min-height: calc(100vh - 48px);
+  padding: 72px 0 80px;
+  border-bottom:1px solid var(--rule);
+  overflow:hidden;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:48px;
+  align-items:center;
+}
+.hero h1{
+  font-family:var(--serif);
+  font-weight:900;
+  font-size: clamp(48px, 7vw, 112px);
+  line-height: 0.92;
+  letter-spacing:-0.01em;
+  margin:0 0 24px;
+  color:var(--ink);
+}
+.hero h1{ font-family:"Frank Ruhl Libre", serif; font-weight:900; }
+
+.hero h1 em{
+  font-style:normal; color:var(--accent);
+  display:inline-block;
+  position:relative;
+}
+.hero .kicker{
+  font-family:var(--mono); font-size:12px; letter-spacing:0.2em;
+  color:var(--ink-dim); text-transform:uppercase;
+  margin-bottom:32px;
+  display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+}
+.hero .kicker .pill{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:5px 10px; border:1px solid var(--rule);
+}
+.hero .kicker .pill .dot{ width:6px; height:6px; }
+
+.hero p.lede{
+  font-family:var(--sans-he);
+  font-size:18px; line-height:1.6;
+  color:var(--ink);
+  max-width:46ch;
+  margin: 0 0 32px;
+  font-weight:500;
+}
+.hero p.lede{ font-family:"JetBrains Mono", ui-monospace, monospace; font-size:14px; line-height:1.7; }
+
+.cta-row{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
+.btn{
+  display:inline-flex; align-items:center; gap:12px;
+  padding:14px 22px;
+  font-family:var(--mono); font-size:12px; letter-spacing:0.14em;
+  text-transform:uppercase;
+  border:1px solid var(--ink);
+  color:var(--bg); background:var(--accent);
+  cursor:pointer; transition: transform .15s ease;
+  border-bottom-width:1px;
+}
+.btn:hover{ transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--ink); color:var(--bg); border-color:var(--ink); }
+.btn.ghost{ background:transparent; color:var(--ink); border:1px solid var(--rule); }
+.btn.ghost:hover{ box-shadow:4px 4px 0 var(--accent); border-color:var(--ink); color:var(--ink); }
+.btn .arrow{ display:inline-block; transition:transform .2s; }
+.btn:hover .arrow{ transform:translateX(4px); }
+
+/* hero physics canvas (right side) */
+.hero-figure{
+  position:relative;
+  align-self:stretch;
+  border:1px solid var(--rule);
+  min-height: 520px;
+  overflow:hidden;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 31px, var(--grid) 31px 32px),
+    repeating-linear-gradient(90deg, transparent 0 31px, var(--grid) 31px 32px);
+}
+.hero-figure .corner{
+  position:absolute; width:14px; height:14px;
+  border:1px solid var(--accent);
+}
+.hero-figure .corner.tl{ top:8px; left:8px; border-right:none; border-bottom:none; }
+.hero-figure .corner.tr{ top:8px; right:8px; border-left:none; border-bottom:none; }
+.hero-figure .corner.bl{ bottom:8px; left:8px; border-right:none; border-top:none; }
+.hero-figure .corner.br{ bottom:8px; right:8px; border-left:none; border-top:none; }
+.hero-figure .meta{
+  position:absolute; top:16px; left:16px; right:16px;
+  display:flex; justify-content:space-between;
+  font-family:var(--mono); font-size:10px; letter-spacing:0.18em;
+  color:var(--ink-dim); text-transform:uppercase;
+  pointer-events:none;
+  direction:ltr;
+}
+.hero-figure .caption{
+  position:absolute; bottom:16px; left:16px; right:16px;
+  display:flex; justify-content:space-between; align-items:end;
+  font-family:var(--mono); font-size:10px; letter-spacing:0.16em;
+  color:var(--ink-dim); text-transform:uppercase;
+  pointer-events:none;
+  direction:ltr;
+}
+.hero-figure .caption .math{ text-transform:none; letter-spacing:0.08em; }
+  pointer-events:none;
+  direction:ltr;
+}
+
+/* canvas + svg overlays */
+#particles{ position:absolute; inset:0; width:100% !important; height:100% !important; display:block; }
+.hero-bg-img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:center;
+  opacity:0.18; mix-blend-mode:multiply;
+  pointer-events:none;
+  filter: grayscale(0.3) contrast(0.95);
+}
+.feynman{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+
+[data-graphics="off"] #particles{ display:none; }
+[data-graphics="off"] .feynman{ display:none; }
+[data-graphics="low"] #particles{ opacity:.55; }
+[data-graphics="high"] #particles{ opacity:1; }
+
+/* data strip */
+.data-strip{
+  margin-top:40px;
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  direction:ltr;
+}
+.data-strip .cell{
+  padding:18px 20px;
+  border-right:1px solid var(--rule);
+  display:flex; flex-direction:column; gap:6px;
+  position:relative;
+}
+.data-strip .cell:last-child{ border-right:none; }
+.data-strip .cell .k{
+  font-family:var(--mono); font-size:9px; letter-spacing:0.22em;
+  color:var(--ink-dim); text-transform:uppercase;
+  display:flex; align-items:center; gap:8px;
+}
+.data-strip .cell .k::before{
+  content:""; width:5px; height:5px; background:var(--accent); display:inline-block;
+}
+.data-strip .cell .v{
+  font-family:var(--serif); font-size:24px; font-weight:500; line-height:1;
+  color:var(--ink); letter-spacing:-0.01em;
+}
+.data-strip .cell .v small{
+  font-family:var(--mono); font-size:10px; color:var(--ink-dim);
+  letter-spacing:0.1em; display:block; margin-top:6px; font-weight:400;
+}
+@media (max-width: 900px){
+  .data-strip{ grid-template-columns: repeat(2,1fr); }
+  .data-strip .cell:nth-child(2n){ border-right:none; }
+  .data-strip .cell{ border-bottom:1px solid var(--rule); }
+  .data-strip .cell:nth-last-child(-n+2){ border-bottom:none; }
+}
+
+/* === DETAIL PANEL === */
+.detail{
+  display:grid;
+  grid-template-columns: 1fr 2fr;
+  gap:48px;
+  padding: 80px 0;
+  border-bottom:1px solid var(--rule);
+}
+.detail h2{
+  font-family:var(--serif); font-weight:700;
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height:1.05;
+  margin:0 0 24px;
+  letter-spacing:-0.01em;
+}
+.detail .body{
+  font-family:var(--sans-he);
+  font-size:16px; line-height:1.7;
+  color:var(--ink);
+  max-width:62ch;
+  font-weight:500;
+}
+.detail .body{ font-family:"JetBrains Mono", monospace; font-size:14px; line-height:1.75; }
+.detail .body p + p{ margin-top:18px; }
+.detail .body em{ background:var(--accent); color:var(--bg); padding:0 6px; font-style:normal; font-weight:500;}
+
+/* facts column */
+.facts{
+  display:flex; flex-direction:column; gap:0;
+  border:1px solid var(--rule);
+}
+.fact{
+  display:grid; grid-template-columns: 100px 1fr;
+  padding:18px 20px;
+  border-bottom:1px solid var(--rule);
+  font-family:var(--mono); font-size:13px;
+  align-items:start;
+}
+.fact:last-child{ border-bottom:none; }
+.fact .k{ color:var(--ink-dim); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; padding-top:3px; }
+.fact .v{ color:var(--ink); font-size:14px; }
+.fact .v small{ color:var(--ink-dim); display:block; font-size:11px; margin-top:4px;}
+
+/* === AUDIENCE === */
+.audience{
+  padding: 80px 0;
+  border-bottom:1px solid var(--rule);
+}
+.audience-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:0;
+  border:1px solid var(--rule);
+}
+.aud-card{
+  padding:32px 24px;
+  border-right:1px solid var(--rule);
+  position:relative;
+  display:flex; flex-direction:column; gap:14px;
+}
+.aud-card:last-child{ border-right:none; }
+.aud-card .num{
+  font-family:var(--mono); font-size:10px; letter-spacing:0.2em;
+  color:var(--accent); margin:0;
+}
+.aud-card .title{
+  font-family:var(--serif); font-weight:500;
+  font-size:22px; line-height:1.2;
+  margin:0;
+}
+.aud-card .desc{
+  font-family:var(--mono); font-size:11px; line-height:1.6;
+  color:var(--ink-dim);
+  font-weight:500;
+}
+.aud-card .glyph{
+  position:absolute; top:28px; right:24px;
+  width:22px; height:22px;
+  color:var(--ink-faint);
+}
+
+/* === FIELDS === */
+.fields{
+  padding: 80px 0;
+  border-bottom:1px solid var(--rule);
+}
+.fields-head{
+  display:grid; grid-template-columns: 1fr 2fr;
+  gap:48px; margin-bottom:48px;
+}
+.fields-head h2{
+  font-family:var(--serif); font-weight:700;
+  font-size: clamp(28px, 3.4vw, 44px);
+  margin:0; line-height:1.05; letter-spacing:-0.01em;
+}
+.fields-head p{
+  font-family:var(--sans-he); font-size:16px; line-height:1.7;
+  color:var(--ink-dim); max-width:60ch; margin:0;
+  font-weight:500;
+}
+.fields-head p{ font-family:"JetBrains Mono", monospace; font-size:13px; line-height:1.75; }
+
+.fields-list{
+  border-top:1px solid var(--rule);
+}
+.field-row{
+  display:grid;
+  grid-template-columns: 80px 220px 1fr 80px;
+  gap:24px;
+  padding:24px 8px;
+  border-bottom:1px solid var(--rule);
+  align-items:center;
+  transition: background .2s;
+  position:relative;
+}
+.field-row:hover{ background: color-mix(in srgb, var(--accent) 5%, transparent); }
+.field-row .num{
+  font-family:var(--mono); font-size:11px; color:var(--ink-dim); letter-spacing:0.1em;
+}
+.field-row .name{
+  font-family:var(--serif); font-size:22px; font-weight:500;
+}
+.field-row .desc{
+  font-family:var(--mono); font-size:12px; color:var(--ink-dim); line-height:1.5;
+  font-weight:500;
+}
+.field-row .sym{
+  font-family:var(--serif); font-style:italic; font-size:24px;
+  color:var(--accent); text-align:right;
+  display:flex; justify-content:flex-end; align-items:center;
+}
+.field-row .sym svg{ display:block; }
+
+/* === ORGANIZERS === */
+.organizers{
+  padding: 80px 0;
+  border-bottom:1px solid var(--rule);
+}
+.org-head{
+  display:flex; justify-content:space-between; align-items:end;
+  margin-bottom:40px;
+  gap:32px; flex-wrap:wrap;
+}
+.org-head h2{
+  font-family:var(--serif); font-weight:700;
+  font-size: clamp(28px, 3.4vw, 44px);
+  margin:0; line-height:1.05; letter-spacing:-0.01em;
+}
+.org-head .meta{
+  font-family:var(--mono); font-size:11px; letter-spacing:0.16em;
+  color:var(--ink-dim); text-transform:uppercase;
+}
+
+.org-list{
+  border-top:1px solid var(--rule);
+}
+.org-row{
+  display:grid;
+  grid-template-columns: 60px 1.6fr 2fr 100px;
+  gap:24px;
+  padding:18px 8px;
+  border-bottom:1px solid var(--rule);
+  align-items:center;
+  font-family:var(--mono); font-size:13px;
+  transition: background .2s;
+}
+.org-row:hover{ background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.org-row .idx{ color:var(--ink-dim); font-size:11px; }
+.org-row .name{
+  font-family:var(--sans-he); font-size:16px; font-weight:500; color:var(--ink);
+}
+.org-row .name{ font-family:var(--mono); font-size:14px; font-weight:500; }
+.org-row .aff{ color:var(--ink-dim); font-size:11px; letter-spacing:0.04em; }
+.org-row .email{ font-size:12px; color:var(--ink); }
+.org-row .email a{ border-bottom-color:var(--ink-faint); }
+.org-row .role{ color:var(--accent); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; text-align:right; }
+
+/* CTA banner */
+.cta-banner{
+  padding: 80px 0 100px;
+  text-align:center;
+  position:relative;
+}
+.cta-banner h2{
+  font-family:var(--serif); font-weight:900;
+  font-size: clamp(40px, 6vw, 88px);
+  line-height:1.0; letter-spacing:-0.02em;
+  margin:0 0 24px;
+}
+.cta-banner h2 em{ font-style:normal; color:var(--accent); }
+.cta-banner p{
+  font-family:var(--mono); font-size:13px; letter-spacing:0.06em;
+  color:var(--ink-dim); margin:0 auto 36px;
+  max-width:60ch;
+}
+
+/* footer */
+footer{
+  border-top:1px solid var(--rule);
+  padding: 32px;
+  font-family:var(--mono); font-size:10px; letter-spacing:0.14em;
+  color:var(--ink-dim); text-transform:uppercase;
+  display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap;
+}
+
+/* responsive */
+@media (max-width: 1100px){
+  .wrap{ padding: 0 24px; }
+  .hero h1{ font-size: clamp(40px, 8vw, 80px); }
+  .hero-grid{ gap:32px; }
+  .detail{ gap:32px; }
+}
+
+/* tablet */
+@media (max-width: 900px){
+  .wrap{ padding: 0 20px; }
+  main{ padding-top:44px; }
+  .chrome{ padding:12px 16px; font-size:10px; gap:12px;}
+  .chrome .left, .chrome .right{ gap:10px; }
+  .chrome span:nth-child(2){ display:none; }
+  .hero{ padding:48px 0 56px; min-height:auto; }
+  .hero-grid{ grid-template-columns: 1fr; gap:32px; min-height:auto; }
+  .hero h1{ font-size: clamp(40px, 9vw, 72px); }
+  .hero p.lede{ font-size:16px; }
+  .hero-figure{ min-height:380px; }
+  .detail{ grid-template-columns: 1fr; padding:56px 22px; gap:32px; }
+  .detail h2{ font-size: clamp(26px, 4.4vw, 36px); }
+  .audience{ padding:56px 0; }
+  .fields{ padding:56px 0; }
+  .fields-head{ grid-template-columns: 1fr; gap:16px; margin-bottom:32px;}
+  .audience-grid{ grid-template-columns: repeat(2,1fr); }
+  .aud-card{ padding:24px 18px; }
+  .aud-card:nth-child(2){ border-right:none; }
+    .aud-card{ border-bottom:1px solid var(--rule); }
+  .aud-card:nth-last-child(-n+2){ border-bottom:none; }
+  .field-row{ grid-template-columns: 50px 1fr 60px; gap:16px; }
+  .field-row .name{ font-size:18px; }
+  .field-row .desc{ display:none; }
+  .organizers{ padding:56px 0; }
+  .org-row{ grid-template-columns: 36px 1fr 1.2fr 70px; gap:14px; font-size:12px; padding:14px 6px; }
+  .org-row .aff{ display:none; }
+  .org-row .name{ font-size:14px; }
+  .org-row .email{ font-size:11px; }
+  .org-row .role{ font-size:9px; }
+  .cta-banner{ padding:56px 0 80px; }
+  .cta-banner h2{ font-size: clamp(36px, 7vw, 64px); }  .data-strip{ grid-template-columns: repeat(2,1fr); }
+  .data-strip .cell:nth-child(2n){ border-right:none; }
+  .data-strip .cell{ border-bottom:1px solid var(--rule); }
+  .data-strip .cell:nth-last-child(-n+2){ border-bottom:none; }
+}
+
+/* mobile */
+@media (max-width: 600px){
+  body{ font-size:13px; }
+  .wrap{ padding: 0 22px; }
+  .detail .body{ font-size:13px; }
+  .detail .body p{ overflow-wrap:break-word; word-break:normal; }
+  .chrome{ padding:10px 12px; font-size:9px; }
+  .chrome .left span:nth-child(2), .chrome .right span:first-child{ display:none; }
+  .hero{ padding:36px 0 40px; }
+  .hero .kicker{ font-size:10px; gap:10px; }
+  .hero h1{ font-size: clamp(34px, 11vw, 56px); line-height:0.96; }
+  .hero p.lede{ font-size:15px; line-height:1.55; }
+  .hero-figure{ min-height:280px; }
+  .hero-figure .meta, .hero-figure .caption{ font-size:8px; letter-spacing:0.12em; }
+  .cta-row{ flex-direction:column; align-items:stretch; gap:10px; }
+  .btn{ padding:13px 18px; font-size:11px; justify-content:center; }
+  .label{ font-size:10px; gap:10px; margin-bottom:18px; }
+  .label::before{ flex:0 0 20px; }
+  .detail{ padding:44px 22px; gap:28px; }
+  .detail h2{ font-size:26px; }
+  .detail .body, .fields-head p{ font-size:14px; }
+  .fact{ grid-template-columns: 80px 1fr; padding:14px 14px; }
+  .fact .k{ font-size:9px; }
+  .fact .v{ font-size:13px; }
+  .audience{ padding:44px 0; }
+  .audience-grid{ grid-template-columns: 1fr; }
+  .aud-card{ border-right:none !important; border-left:none !important; border-bottom:1px solid var(--rule); padding:22px 18px; }
+  .aud-card:last-child{ border-bottom:none; }
+  .aud-card .title{ font-size:20px; }
+  .fields{ padding:44px 0; }
+  .fields-head h2, .org-head h2{ font-size:26px; }
+  .field-row{ grid-template-columns: 36px 1fr 40px; gap:12px; padding:18px 4px; }
+  .field-row .name{ font-size:16px; }
+  .field-row .sym svg{ width:34px; height:20px; }
+  .organizers{ padding:44px 0; }
+  .org-head{ margin-bottom:24px; }
+  .org-row{ grid-template-columns: 24px 1fr; gap:4px 8px; padding:12px 4px; }
+  .org-row .aff, .org-row .role{ display:none; }
+  .org-row .idx{ grid-row: 1 / span 2; }
+  .org-row .name{ grid-column: 2; grid-row: 1; font-size:13px; }
+  .org-row .email{ grid-column: 2; grid-row: 2; font-size:11px; word-break:break-all; position:relative; z-index:2; }
+  .org-row .email a{ display:inline-block; padding:4px 0; }
+  .org-row .name{ font-size:13px; }
+  .cta-banner{ padding:44px 0 64px; }
+  .cta-banner h2{ font-size: clamp(30px, 9vw, 44px); }
+  .cta-banner p{ font-size:12px; }
+  footer{ padding:20px 16px; font-size:9px; gap:12px; }
+  .flag{ height:240px !important; }
+}
+
+.email-img{ display:block; height:14px; width:auto; image-rendering:auto; }
+@media (max-width:600px){ .email-img{ height:13px; } }
+@media (max-width:380px){ .email-img{ height:12px; } }
+
+</style>
+</head>
+<body data-palette="sky" data-graphics="high">
+
+<div class="bg-grid"></div>
+
+<!-- decorative Israeli flag - faded top backdrop -->
+<div class="flag" aria-hidden="true">
+  <svg viewBox="0 0 220 160" preserveAspectRatio="xMidYMid slice">
+    <rect x="0" y="14" width="220" height="18" fill="#0038b8"/>
+    <rect x="0" y="128" width="220" height="18" fill="#0038b8"/>
+    <g fill="none" stroke="#0038b8" stroke-width="5" stroke-linejoin="miter">
+      <polygon points="110,52 134,94 86,94"/>
+      <polygon points="110,108 86,66 134,66"/>
+    </g>
+  </svg>
+</div>
+
+<!-- top chrome -->
+<header class="chrome">
+  <div class="left">
+    <span><span class="dot"></span></span>
+    <span>SYM/PHYS/IL · 2026.10</span>
+    <span style="color:var(--ink-faint)">|</span>
+    <span>OCTOBER 26, 2026</span>
+  </div>
+  <div class="right">
+    <span>STATUS: REGISTRATION OPEN</span>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <div class="kicker">
+            <span class="pill"><span class="dot"></span> <span>OCTOBER 26, 2026</span></span>
+            <span>TEL AVIV UNIVERSITY</span>
+          </div>
+          <h1 data-i18n="hero.title">
+            <span data-i18n="hero.t1">Israeli physicists</span><br/>
+            <em data-i18n="hero.t3">gather.</em>
+          </h1>
+          <p class="lede">A scientific symposium bringing together Israeli physicists from across the field — researchers based in Israel and colleagues working at institutions abroad. A working meeting for exchange, collaboration, and stronger ties across the community.</p>
+          <div class="cta-row">
+            <a class="btn" href="https://www.mind-il.org/register/6a3031aea90316da446a7896" target="_blank" rel="noopener">
+              <span>Register &amp; submit abstract</span>
+              <span class="arrow">→</span>
+            </a>
+            <a class="btn ghost" href="Scientific Program.html">
+              <span>Program</span>
+              <span class="arrow">→</span>
+            </a>
+            <!--email_off--><a class="btn ghost" href="mailto:ereze@tau.ac.il?subject=Israeli%20Physicists%20Symposium%20·%20Inquiry">
+              <span>Contact us</span>
+              <span class="arrow">✉</span>
+            </a><!--/email_off-->
+            <a class="btn ghost" href="#organizers">
+              <span>Organizing committee</span>
+              <span class="arrow">↓</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- physics figure -->
+        <div class="hero-figure">
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="meta">
+            <span>FIG.01 — N-BODY · PARTICLE TRACES</span>
+            <span>RUN 2026.10</span>
+          </div>
+          <img class="hero-bg-img" src="einstein-vote.jpg" alt="" aria-hidden="true" />
+          <svg class="feynman" viewBox="0 0 600 520" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <pattern id="wave" patternUnits="userSpaceOnUse" width="20" height="8">
+                <path d="M0 4 Q5 0 10 4 T20 4" stroke="currentColor" fill="none" stroke-width="1"/>
+              </pattern>
+            </defs>
+            <!-- Feynman-ish vertices -->
+            <g stroke="currentColor" fill="none" stroke-width="1" opacity="0.55" style="color:var(--ink-dim)">
+              <!-- incoming -->
+              <line x1="40" y1="120" x2="220" y2="220"/>
+              <line x1="40" y1="320" x2="220" y2="220"/>
+              <!-- outgoing -->
+              <line x1="380" y1="220" x2="560" y2="120"/>
+              <line x1="380" y1="220" x2="560" y2="320"/>
+              <!-- propagator (wavy) -->
+              <path d="M220 220 Q240 200 260 220 T300 220 T340 220 T380 220" stroke-width="1.2"/>
+              <!-- vertices -->
+              <circle cx="220" cy="220" r="3" fill="currentColor"/>
+              <circle cx="380" cy="220" r="3" fill="currentColor"/>
+              <!-- arrows -->
+              <polygon points="120,170 130,170 125,178" fill="currentColor"/>
+              <polygon points="120,270 130,270 125,262" fill="currentColor"/>
+              <polygon points="475,170 485,170 480,162" fill="currentColor"/>
+              <polygon points="475,270 485,270 480,278" fill="currentColor"/>
+            </g>
+            <!-- labels -->
+            <g font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.1em" fill="currentColor" opacity="0.7" style="color:var(--accent)">
+              <text x="40" y="110">e⁻</text>
+              <text x="40" y="340">e⁺</text>
+              <text x="555" y="110" text-anchor="end">μ⁻</text>
+              <text x="555" y="340" text-anchor="end">μ⁺</text>
+              <text x="295" y="208" text-anchor="middle">γ / Z⁰</text>
+            </g>
+            <!-- crosshair -->
+            <g stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 4" opacity="0.4" style="color:var(--accent)">
+              <line x1="300" y1="0" x2="300" y2="520"/>
+              <line x1="0" y1="260" x2="600" y2="260"/>
+            </g>
+          </svg>
+          <div class="caption">
+            <span><span class="math">e⁻e⁺ → μ⁻μ⁺</span> · TREE LEVEL</span>
+            <span class="math">α ≈ 1/137</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- data strip -->
+      <div class="data-strip" aria-label="key facts">
+        <div class="cell">
+          <span class="k">Date</span>
+          <span class="v">26 / 10 / 2026<small>Conference date</small></span>
+        </div>
+        <div class="cell">
+          <span class="k">Venue</span>
+          <span class="v">Tel Aviv University</span>
+        </div>
+        <div class="cell">
+          <span class="k">Fields</span>
+          <span class="v">06 +<small>All of physics</small></span>
+        </div>
+        <div class="cell">
+          <span class="k">Format</span>
+          <span class="v">1-day</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DETAIL -->
+  <section class="detail" id="about">
+    <div class="wrap" style="display:contents">
+      <div>
+        <div class="label"><span class="num">[01]</span> <span>ABOUT</span></div>
+        <ul class="facts">
+          <li class="fact"><span class="k">DATE</span><span class="v"><span>October 26, 2026</span><small></small></span></li>
+          <li class="fact"><span class="k">PLACE</span><span class="v"><span>Tel Aviv University</span><small></small></span></li>
+          <li class="fact"><span class="k">FORMAT</span><span class="v"><span>One-day symposium</span><small>Talks · posters · panels · networking</small></span></li>
+          <li class="fact"><span class="k">LANGUAGE</span><span class="v"><span>English</span></span></li>
+          <li class="fact"><span class="k">HOSTED BY</span><span class="v"><span>A group of local researchers</span></span></li>
+        </ul>
+      </div>
+      <div>
+        <h2>One day. <em>The whole community.</em></h2>
+        <div class="body">
+          <p>A scientific symposium bringing together the Israeli physics community — researchers based at universities and institutes in Israel, alongside colleagues working at institutions abroad who happen to be in the country during this period.</p>
+          <p>The meeting offers an opportunity to share recent results, identify new collaborations, and strengthen scientific ties across the field — both within the local community and beyond it.</p>
+          <p>The physics symposium is part of a broader initiative
+to hold community-oriented scientific gatherings
+across different fields. To help shape the program and the distribution of sub-fields, we invite you to <a href="https://www.mind-il.org/register/6a3031aea90316da446a7896" target="_blank" rel="noopener"><em>register and submit an abstract</em></a>.
+
+
+If you would like to take part in organizing the event,
+you are warmly invited to contact the committee members.</p>
+          <p>
+</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUDIENCE -->
+  <section class="audience">
+    <div class="wrap">
+      <div class="label"><span class="num">[02]</span> <span>WHO IT'S FOR</span></div>
+      <h2 style="font-family:var(--serif); font-weight:700; font-size:clamp(28px,3.4vw,44px); margin:0 0 40px; line-height:1.05; letter-spacing:-0.01em">Who it's for.</h2>
+
+      <div class="audience-grid">
+        <div class="aud-card">
+          <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="8" r="3"/><path d="M5 20c0-4 3-7 7-7s7 3 7 7"/></svg>
+          <div class="num">A.01</div>
+          <div>
+            <div class="title">Faculty</div>
+          </div>
+        </div>
+        <div class="aud-card">
+          <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M3 17l9-12 9 12-9 4z"/></svg>
+          <div class="num">A.02</div>
+          <div>
+            <div class="title">Postdocs</div>
+          </div>
+        </div>
+        <div class="aud-card">
+          <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18"/></svg>
+          <div class="num">A.03</div>
+          <div>
+            <div class="title">Ph.D. students</div>
+          </div>
+        </div>
+        <div class="aud-card">
+          <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M2 7l10 5 10-5-10-5z"/><path d="M2 12l10 5 10-5"/><path d="M2 17l10 5 10-5"/></svg>
+          <div class="num">A.04</div>
+          <div>
+            <div class="title">B.Sc / M.Sc students</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIELDS -->
+  <section class="fields">
+    <div class="wrap">
+      <div class="label"><span class="num">[03]</span> <span>RESEARCH FIELDS</span></div>
+      <div class="fields-head">
+        <h2>All of physics.</h2>
+        <p>Panels and talks will be assigned by registrant distribution. Pick the field closest to your work in the form — and we'll build a meeting that reflects the community as it actually is.</p>
+      </div>
+
+      <ol class="fields-list" style="list-style:none; padding:0; margin:0">
+        <li class="field-row">
+          <span class="num">/01</span>
+          <span class="name">Particles · Nuclear</span>
+          <span class="desc">Collider physics, neutrinos, dark matter, nuclear, plasma, string theory, beyond-standard-model</span>
+          <span class="sym">℘</span>
+        </li>
+        <li class="field-row">
+          <span class="num">/02</span>
+          <span class="name">Astrophysics</span>
+          <span class="desc">Cosmology, gravitational waves, galaxies, stars, gravity, the early universe, transients & multi-messenger astrophysics, exoplanets, high-energy astrophysics</span>
+          <span class="sym">★</span>
+        </li>
+        <li class="field-row">
+          <span class="num">/03</span>
+          <span class="name">Atomic, Molecular & Optical</span>
+          <span class="desc">Quantum optics, ultracold matter, quantum information and technology</span>
+          <span class="sym">⟨ψ|</span>
+        </li>
+        <li class="field-row">
+          <span class="num">/04</span>
+          <span class="name">Soft matter</span>
+          <span class="desc">Biophysics, statistical physics</span>
+          <span class="sym">∂S</span>
+        </li>
+        <li class="field-row">
+          <span class="num">/05</span>
+          <span class="name">Complex Systems</span>
+          <span class="desc">Networks, active matter, nonlinear dynamics
+</span>
+          <span class="sym">∇²</span>
+        </li>
+        <li class="field-row">
+          <span class="num">/06</span>
+          <span class="name">Condensed Matter</span>
+          <span class="desc">Solid state, materials, quantum materials, superconductivity</span>
+          <span class="sym" aria-label="graphene lattice"><svg width="42" height="24" viewBox="0 0 42 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"><polygon points="6,2 14,2 18,8 14,14 6,14 2,8"/><polygon points="18,2 26,2 30,8 26,14 18,14 14,8" style="opacity:.55"/><polygon points="30,2 38,2 42,8 38,14 30,14 26,8" style="opacity:.3"/><polygon points="14,14 22,14 26,20 22,26 14,26 10,20" style="opacity:.7"/><polygon points="26,14 34,14 38,20 34,26 26,26 22,20" style="opacity:.4"/></svg></span>
+        </li>
+        <li class="field-row">
+          <span class="num">/07</span>
+          <span class="name">Other fields — proposals welcome</span>
+          <span class="desc">Interdisciplinary and emerging directions</span>
+          <span class="sym">+</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ORGANIZERS -->
+  <section class="organizers" id="organizers">
+    <div class="wrap">
+      <div class="label"><span class="num">[04]</span> <span>ORGANIZING COMMITTEE</span></div>
+      <div class="org-head">
+        <h2>Organizing committee.</h2>
+        <div class="meta">CONTACT US DIRECTLY</div>
+      </div>
+
+      <ol class="org-list" style="list-style:none; padding:0; margin:0">
+        <li class="org-row">
+          <span class="idx">/01</span>
+          <span class="name">Erez Etzion</span>
+          <span class="aff"></span>
+          <!--email_off--><span class="email"><a href="mailto:ereze@tau.ac.il"><img src="email-ereze_tau_ac_il.png" alt="ereze@tau.ac.il" class="email-img"/></a></span><!--/email_off-->
+          <span class="role">CHAIR</span>
+        </li>
+        <li class="org-row">
+          <span class="idx">/02</span>
+          <span class="name">Roy Beck-Barkai</span>
+          <span class="aff"></span>
+          <!--email_off--><span class="email"><a href="mailto:roy@tau.ac.il"><img src="email-roy_tau_ac_il.png" alt="roy@tau.ac.il" class="email-img"/></a></span><!--/email_off-->
+          <span class="role"></span>
+        </li>
+        <li class="org-row">
+          <span class="idx">/03</span>
+          <span class="name">Tomer Volansky</span>
+          <span class="aff"></span>
+          <!--email_off--><span class="email"><a href="mailto:tomerv@tauex.tau.ac.il"><img src="email-tomerv_tauex_tau_ac_il.png" alt="tomerv@tauex.tau.ac.il" class="email-img"/></a></span><!--/email_off-->
+          <span class="role"></span>
+        </li>
+        <li class="org-row">
+          <span class="idx">/04</span>
+          <span class="name">Ranny Budnik</span>
+          <span class="aff"></span>
+          <!--email_off--><span class="email"><a href="mailto:ran.budnik@weizmann.ac.il"><img src="email-ran_budnik_weizmann_ac_il.png" alt="ran.budnik@weizmann.ac.il" class="email-img"/></a></span><!--/email_off-->
+          <span class="role"></span>
+        </li>
+        <li class="org-row">
+          <span class="idx">/05</span>
+          <span class="name">Adi Ashkenazi</span>
+          <span class="aff"></span>
+          <!--email_off--><span class="email"><a href="mailto:adishka@tauex.tau.ac.il"><img src="email-adishka_tauex_tau_ac_il.png" alt="adishka@tauex.tau.ac.il" class="email-img"/></a></span><!--/email_off-->
+          <span class="role"></span>
+        </li>
+        <li class="org-row">
+          <span class="idx">/06</span>
+          <span class="name">Yevgeny Kats</span>
+          <span class="aff"></span>
+          <!--email_off--><span class="email"><a href="mailto:katsye@bgu.ac.il"><img src="email-katsye_bgu_ac_il.png" alt="katsye@bgu.ac.il" class="email-img"/></a></span><!--/email_off-->
+          <span class="role"></span>
+        </li>
+        <li class="org-row">
+          <span class="idx">/07</span>
+          <span class="name">Alon Ron</span>
+          <span class="aff"></span>
+          <!--email_off--><span class="email"><a href="mailto:alonron@tau.ac.il"><img src="email-alonron_tau_ac_il.png" alt="alonron@tau.ac.il" class="email-img"/></a></span><!--/email_off-->
+          <span class="role"></span>
+        </li>
+        <li class="org-row">
+          <span class="idx">/08</span>
+          <span class="name">Ran Finkelstein</span>
+          <span class="aff"></span>
+          <!--email_off--><span class="email"><a href="mailto:ranf@tau.ac.il"><img src="email-ranf_tau_ac_il.png" alt="ranf@tau.ac.il" class="email-img"/></a></span><!--/email_off-->
+          <span class="role"></span>
+        </li>
+        <li class="org-row">
+          <span class="idx">/09</span>
+          <span class="name">Shany Danieli</span>
+          <span class="aff"></span>
+          <!--email_off--><span class="email"><a href="mailto:sdanieli@tauex.tau.ac.il"><img src="email-sdanieli_tauex_tau_ac_il.png" alt="sdanieli@tauex.tau.ac.il" class="email-img"/></a></span><!--/email_off-->
+          <span class="role"></span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- CTA banner -->
+  <section class="cta-banner">
+    <div class="wrap">
+      <h2>Register <em>now.</em><br/>Submit your abstract.</h2>
+      <p>The number and distribution of respondents shape the meeting. The form is short — under three minutes. Please share it with anyone you think might be interested.</p>
+      <a class="btn" href="https://www.mind-il.org/register/6a3031aea90316da446a7896" target="_blank" rel="noopener">
+        <span>Register now</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div>© 2026 · ISRAELI PHYSICISTS SYMPOSIUM</div>
+    <div>PART OF <a href="https://www.mind-il.org/" target="_blank" rel="noopener">MIND-IL.ORG</a> · COMMUNITY-ORGANIZED</div>
+  </footer>
+</main>
+
+<!-- ============== I18N + PARTICLES + LANG TOGGLE ============== -->
+<script>
+
+// ============== particle canvas (n-body trace) ==============
+(function particles(){
+  const canvas = document.getElementById("particles");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  let W, H, dpr, parts, raf;
+
+  function resize(){
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    const r = canvas.parentElement.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function init(){
+    resize();
+    const N = 38;
+    parts = Array.from({length:N}, () => ({
+      x: Math.random()*W,
+      y: Math.random()*H,
+      vx: (Math.random()-0.5)*0.4,
+      vy: (Math.random()-0.5)*0.4,
+      r: Math.random()*1.4 + 0.6,
+      hue: Math.random() < 0.18 ? 1 : 0  // 18% accent-colored
+    }));
+  }
+  function step(){
+    // fade trail
+    ctx.fillStyle = getComputedStyle(document.body).getPropertyValue("--bg").trim() || "#f4f7fb";
+    ctx.globalAlpha = 0.18;
+    ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha = 1;
+
+    const accent = getComputedStyle(document.body).getPropertyValue("--accent").trim() || "#d8ff3a";
+    const dim = getComputedStyle(document.body).getPropertyValue("--ink-dim").trim() || "#9a9a93";
+
+    // links
+    ctx.lineWidth = 0.5;
+    for (let i=0;i<parts.length;i++){
+      for (let j=i+1;j<parts.length;j++){
+        const a = parts[i], b = parts[j];
+        const dx = a.x-b.x, dy = a.y-b.y;
+        const d2 = dx*dx + dy*dy;
+        if (d2 < 110*110){
+          const alpha = 1 - Math.sqrt(d2)/110;
+          ctx.strokeStyle = (a.hue || b.hue) ? accent : dim;
+          ctx.globalAlpha = alpha * 0.35;
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // particles
+    for (const p of parts){
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+      ctx.fillStyle = p.hue ? accent : dim;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+      if (p.hue){
+        ctx.globalAlpha = 0.22;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r*4,0,Math.PI*2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+    raf = requestAnimationFrame(step);
+  }
+  init();
+  step();
+  window.addEventListener("resize", () => { cancelAnimationFrame(raf); init(); step(); });
+})();
+</script>
+
+</body>
+</html>
